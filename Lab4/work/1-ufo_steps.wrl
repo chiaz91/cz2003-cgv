@@ -1,0 +1,576 @@
+#VRML V2.0 utf8
+
+# The following EXTERNPROTO definitins remain the same for all FVRML scenes.
+
+EXTERNPROTO FGeometry [
+	exposedField SFString definition
+	exposedField MFFloat parameters
+	exposedField MFInt32 resolution
+	exposedField SFVec3f bboxCenter
+	exposedField SFVec3f bboxSize
+	exposedField SFString type
+	exposedField MFNode	parents
+	exposedField SFVec2f timeSpan
+] "http://www3.ntu.edu.sg/home/assourin/FVRML/FVRML.wrl#FGeometry"
+EXTERNPROTO FMaterial [
+	exposedField SFString diffuseColor
+	exposedField SFString type
+	exposedField MFColor patternColor
+	exposedField MFFloat patternKey
+	exposedField SFString ambientIntensity
+	exposedField SFString emissiveColor
+	exposedField SFString shininess
+	exposedField SFString specularColor
+	exposedField SFString transparency
+	exposedField MFFloat parameters
+	exposedField MFNode	parents
+	exposedField SFVec2f timeSpan
+] "http://www3.ntu.edu.sg/home/assourin/FVRML/FVRML.wrl#FMaterial"
+EXTERNPROTO FTexture3D [
+	exposedField SFString definition
+	exposedField SFString type
+	exposedField MFFloat parameters
+	exposedField MFNode	parents
+	exposedField SFVec2f timeSpan
+] "http://www3.ntu.edu.sg/home/assourin/FVRML/FVRML.wrl#FTexture3D"
+EXTERNPROTO FAppearance [
+	exposedField SFNode	material
+	exposedField SFNode	texture
+	exposedField SFNode	textureTransform
+	exposedField SFNode	texture3D
+	exposedField MFNode	parents
+	eventIn	SFBool refresh
+] "http://www3.ntu.edu.sg/home/assourin/FVRML/FVRML.wrl#FAppearance"
+EXTERNPROTO FShape [
+	exposedField SFNode	geometry
+	exposedField SFNode	appearance
+	exposedField SFString polygonizer
+	exposedField MFNode	parents
+	exposedField SFTime	startTime
+	exposedField SFTime stopTime
+    exposedField SFTime cycleInterval
+    exposedField SFBool	loop
+	exposedField SFBool	enabled
+	eventOut SFTime	cycleTime
+	eventIn SFFloat set_fraction
+	field SFInt32 frames
+] "http://www3.ntu.edu.sg/home/assourin/FVRML/FVRML.wrl#FShape"
+EXTERNPROTO FTransform [
+	exposedField SFString operation
+	exposedField SFString type
+	exposedField SFString polygonizer
+	exposedField MFFloat parameters
+	exposedField SFString center
+	exposedField SFString rotation
+	exposedField SFString scale
+	exposedField SFString scaleOrientation
+	exposedField SFString translation
+	exposedField MFNode children
+	exposedField MFNode	parents
+	eventIn	SFBool refresh
+    exposedField SFVec2f timeSpan
+	exposedField SFTime	startTime
+	exposedField SFTime stopTime
+    exposedField SFTime cycleInterval
+    exposedField SFBool	loop
+	exposedField SFBool	enabled
+	eventOut SFTime	cycleTime
+	eventIn SFFloat set_fraction
+	field SFInt32 frames
+] "http://www3.ntu.edu.sg/home/assourin/FVRML/FVRML.wrl#FTransform"
+
+Background {skyColor 0.2 0.2 0.2}
+
+
+Viewpoint {
+	position 0 0 7.5
+	description "1: half sphere"
+}
+Transform{
+  translation -1.5  -1.6 0
+  scale 0.3 0.3 0.3
+  children[ 
+       Shape { geometry Text { string [ "sphere - halfspace = half sphere" ]}}
+     ]
+} 
+Viewpoint {
+	position 0 -3.5 7.5
+	description "2: plate"
+}
+Transform{
+  translation -1.5  -5.1 0
+  scale 0.3 0.3 0.3
+  children[ 
+       Shape { geometry Text { string [ "ellipsoid - cylinder = plate" ]}}
+     ]
+}
+
+Viewpoint {
+	position 0 -7 7.5
+	description "3: ufo"
+}
+Transform{
+  translation -1.5  -8.6 0
+  scale 0.3 0.3 0.3
+  children[ 
+       Shape { geometry Text { string [ "half sphere - plate = ufo" ]}}
+     ]
+}
+
+Viewpoint {
+	position 0 -10.5 7.5
+	description "4: cone"
+}
+Transform{
+  translation -1.5  -12.1 0
+  scale 0.3 0.3 0.3
+  children[ 
+       Shape { geometry Text { string [ "cone - half space = bottom cone" ]}}
+     ]
+}
+
+Viewpoint {
+	position 0 -14 7.5
+	description "5: ufo with beam"
+}
+Transform{
+  translation -1.5  -15.6 0
+  scale 0.3 0.3 0.3
+  children[ 
+       Shape { geometry Text { string [ "ufo + bottom cone = ufo with beam" ]}}
+     ]
+} 
+
+
+
+# layer 1, left
+Transform{
+	translation -2.5 0 0
+	children [
+		Inline {url "http://www3.ntu.edu.sg/home/assourin/FVRML/CoordinateAxes.wrl"}
+		FShape {
+			geometry FGeometry {
+				definition "
+					function frep(x,y,z,t){
+						sphere = 0.4-x^2-y^2-z^2;
+						return sphere;
+					}
+				"
+				bboxCenter 0 0 0 
+				bboxSize 2 2 2
+				resolution [100 100 100]
+			}     
+
+			appearance FAppearance {
+				material FMaterial {
+					diffuseColor "r=0; g=1;b=0.5;"
+				}    
+			}
+		}	
+	]
+}
+
+# layer 1, center
+Transform{
+	translation 0 0 0
+	children [
+		Inline {url "http://www3.ntu.edu.sg/home/assourin/FVRML/CoordinateAxes.wrl"}
+		FShape {
+			geometry FGeometry {
+				definition "
+					function frep(x,y,z,t){
+
+						return y;
+					}
+				"
+				bboxCenter 0 0 0 
+				bboxSize 2 2 2
+				resolution [100 100 100]
+			}     
+
+			appearance FAppearance {
+				material FMaterial {
+					diffuseColor "r=0; g=1;b=0.5;"
+				}    
+			}
+		}	
+	]
+}
+
+# layer 1, right
+Transform{
+	translation 2.5 0 0
+	children [
+		Inline {url "http://www3.ntu.edu.sg/home/assourin/FVRML/CoordinateAxes.wrl"}
+		FShape {
+			geometry FGeometry {
+				definition "
+					function frep(x,y,z,t){
+						sphere = 0.4-x^2-y^2-z^2;
+						half_sphere = min(sphere,y);
+						return half_sphere;
+					}
+				"
+				bboxCenter 0 0 0 
+				bboxSize 2 2 2
+				resolution [100 100 100]
+			}     
+
+			appearance FAppearance {
+				material FMaterial {
+					diffuseColor "r=0; g=1;b=0.5;"
+				}    
+			}
+		}	
+	]
+}
+
+# layer 2, left
+Transform{
+	translation -2.5 -3.5 0
+	children [
+		Inline {url "http://www3.ntu.edu.sg/home/assourin/FVRML/CoordinateAxes.wrl"}
+		FShape {
+			geometry FGeometry {
+				definition "
+					function frep(x,y,z,t){
+						ellipsoid = 0.01-0.01*(x)^2-0.3*(y)^2-0.01*(z)^2;
+						return ellipsoid;
+					}
+				"
+				bboxCenter 0 0 0 
+				bboxSize 2 2 2
+				resolution [100 100 100]
+			}     
+
+			appearance FAppearance {
+				material FMaterial {
+					diffuseColor "r=0; g=1;b=0.5;"
+				}    
+			}
+		}	
+	]
+}
+
+# layer 2, center
+Transform{
+	translation 0 -3.5 0
+	children [
+		Inline {url "http://www3.ntu.edu.sg/home/assourin/FVRML/CoordinateAxes.wrl"}
+		FShape {
+			geometry FGeometry {
+				definition "
+					function frep(x,y,z,t){
+						cylinder = 0.1 - (x/1)^2 - (z/1)^2;
+						return cylinder;
+					}
+				"
+				bboxCenter 0 0 0 
+				bboxSize 2 2 2
+				resolution [100 100 100]
+			}     
+
+			appearance FAppearance {
+				material FMaterial {
+					diffuseColor "r=0; g=1;b=0.5;"
+				}    
+			}
+		}	
+	]
+}
+
+# layer 2, right
+Transform{
+	translation 2.5 -3.5 0
+	children [
+		Inline {url "http://www3.ntu.edu.sg/home/assourin/FVRML/CoordinateAxes.wrl"}
+		FShape {
+			geometry FGeometry {
+				definition "
+					function frep(x,y,z,t){
+						ellipsoid = 0.01-0.01*(x)^2-0.3*(y)^2-0.01*(z)^2;
+						cylinder = 0.1 - (x/1)^2 - (z/1)^2;
+						donut = min(ellipsoid,-cylinder);
+						return donut;
+					}
+				"
+				bboxCenter 0 0 0 
+				bboxSize 2 2 2
+				resolution [100 100 100]
+			}     
+
+			appearance FAppearance {
+				material FMaterial {
+					diffuseColor "r=0; g=1;b=0.5;"
+				}    
+			}
+		}	
+	]
+}
+
+# layer 3, left
+Transform{
+	translation -2.5 -7 0
+	children [
+		Inline {url "http://www3.ntu.edu.sg/home/assourin/FVRML/CoordinateAxes.wrl"}
+		FShape {
+			geometry FGeometry {
+				definition "
+					function frep(x,y,z,t){
+						sphere = 0.4-x^2-y^2-z^2;
+						half_sphere = min(sphere,y);
+						return half_sphere;
+					}
+				"
+				bboxCenter 0 0 0 
+				bboxSize 2 2 2
+				resolution [100 100 100]
+			}     
+
+			appearance FAppearance {
+				material FMaterial {
+					diffuseColor "r=0; g=1;b=0.5;"
+				}    
+			}
+		}	
+	]
+}
+
+# layer 3, center
+Transform{
+	translation 0 -7 0
+	children [
+		Inline {url "http://www3.ntu.edu.sg/home/assourin/FVRML/CoordinateAxes.wrl"}
+		FShape {
+			geometry FGeometry {
+				definition "
+					function frep(x,y,z,t){
+						ellipsoid = 0.01-0.01*(x)^2-0.3*(y)^2-0.01*(z)^2;
+						cylinder = 0.1 - (x/1)^2 - (z/1)^2;
+						donut = min(ellipsoid,-cylinder);
+						return donut;
+					}
+				"
+				bboxCenter 0 0 0 
+				bboxSize 2 2 2
+				resolution [100 100 100]
+			}     
+
+			appearance FAppearance {
+				material FMaterial {
+					diffuseColor "r=0; g=1;b=0.5;"
+				}    
+			}
+		}	
+	]
+}
+
+# layer 3, right
+Transform{
+	translation 2.5 -7 0
+	children [
+		Inline {url "http://www3.ntu.edu.sg/home/assourin/FVRML/CoordinateAxes.wrl"}
+		FShape {
+			geometry FGeometry {
+				definition "
+					function frep(x,y,z,t){
+						sphere = 0.4-x^2-y^2-z^2;
+						half_sphere = min(sphere,y);
+						ellipsoid = 0.01-0.01*(x)^2-0.3*(y)^2-0.01*(z)^2;
+						cylinder = 0.1 - (x/1)^2 - (z/1)^2;
+						donut = min(ellipsoid,-cylinder);
+						ufo = max(donut, half_sphere);
+						return ufo;
+					}
+				"
+				bboxCenter 0 0 0 
+				bboxSize 2 2 2
+				resolution [100 100 100]
+			}     
+
+			appearance FAppearance {
+				material FMaterial {
+					diffuseColor "r=0; g=1;b=0.5;"
+				}    
+			}
+		}	
+	]
+}
+
+
+# layer 4, left
+Transform{
+	translation -2.5 -10.5 0
+	children [
+		Inline {url "http://www3.ntu.edu.sg/home/assourin/FVRML/CoordinateAxes.wrl"}
+		FShape {
+			geometry FGeometry {
+				definition "
+					function frep(x,y,z,t){
+						cone_double = (y/2)^2-(x/1)^2-(z/1)^2;
+						return cone_double;
+					}
+				"
+				bboxCenter 0 0 0 
+				bboxSize 2 2 2
+				resolution [100 100 100]
+			}     
+
+			appearance FAppearance {
+				material FMaterial {
+					diffuseColor "r=0; g=1;b=0.5;"
+				}    
+			}
+		}	
+	]
+}
+
+# layer 1, center
+Transform{
+	translation 0 -10.5 0
+	children [
+		Inline {url "http://www3.ntu.edu.sg/home/assourin/FVRML/CoordinateAxes.wrl"}
+		FShape {
+			geometry FGeometry {
+				definition "
+					function frep(x,y,z,t){
+						return -y;
+					}
+				"
+				bboxCenter 0 0 0 
+				bboxSize 2 2 2
+				resolution [100 100 100]
+			}     
+
+			appearance FAppearance {
+				material FMaterial {
+					diffuseColor "r=0; g=1;b=0.5;"
+				}    
+			}
+		}	
+	]
+}
+
+# layer 1, right
+Transform{
+	translation 2.5 -10.5 0
+	children [
+		Inline {url "http://www3.ntu.edu.sg/home/assourin/FVRML/CoordinateAxes.wrl"}
+		FShape {
+			geometry FGeometry {
+				definition "
+					function frep(x,y,z,t){
+						cone= min((y/2)^2-(x/1)^2-(z/1)^2, -y);
+						return cone;
+					}
+				"
+				bboxCenter 0 0 0 
+				bboxSize 2 2 2
+				resolution [100 100 100]
+			}     
+
+			appearance FAppearance {
+				material FMaterial {
+					diffuseColor "r=0; g=1;b=0.5;"
+				}    
+			}
+		}	
+	]
+}
+
+# layer 1, left
+Transform{
+	translation -2.5 -14 0
+	children [
+		Inline {url "http://www3.ntu.edu.sg/home/assourin/FVRML/CoordinateAxes.wrl"}
+		FShape {
+			geometry FGeometry {
+				definition "
+					function frep(x,y,z,t){
+						sphere = 0.4-x^2-y^2-z^2;
+						half_sphere = min(sphere,y);
+						ellipsoid = 0.01-0.01*(x)^2-0.3*(y)^2-0.01*(z)^2;
+						cylinder = 0.1 - (x/1)^2 - (z/1)^2;
+						donut = min(ellipsoid,-cylinder);
+						ufo = max(donut, half_sphere);
+						return ufo;
+					}
+				"
+				bboxCenter 0 0 0 
+				bboxSize 2 2 2
+				resolution [100 100 100]
+			}     
+
+			appearance FAppearance {
+				material FMaterial {
+					diffuseColor "r=0; g=1;b=0.5;"
+				}    
+			}
+		}	
+	]
+}
+
+# layer 1, center
+Transform{
+	translation 0 -14 0
+	children [
+		Inline {url "http://www3.ntu.edu.sg/home/assourin/FVRML/CoordinateAxes.wrl"}
+		FShape {
+			geometry FGeometry {
+				definition "
+					function frep(x,y,z,t){
+						cone= min((y/2)^2-(x/1)^2-(z/1)^2, -y);
+						return cone;
+					}
+				"
+				bboxCenter 0 0 0 
+				bboxSize 2 2 2
+				resolution [100 100 100]
+			}     
+
+			appearance FAppearance {
+				material FMaterial {
+					diffuseColor "r=0; g=1;b=0.5;"
+				}    
+			}
+		}	
+	]
+}
+
+
+# layer 5, right
+Transform{
+	translation 2.5 -14 0
+	children [
+		Inline {url "http://www3.ntu.edu.sg/home/assourin/FVRML/CoordinateAxes.wrl"}
+		FShape {
+			geometry FGeometry {
+				definition "
+					function frep(x,y,z,t){
+						sphere = 0.4-x^2-y^2-z^2;
+						half_sphere = min(sphere,y);
+						ellipsoid = 0.01-0.01*(x)^2-0.3*(y)^2-0.01*(z)^2;
+						cylinder = 0.1 - (x/1)^2 - (z/1)^2;
+						donut = min(ellipsoid,-cylinder);
+						ufo = max(donut, half_sphere);
+						cone= min((y/2)^2-(x/1)^2-(z/1)^2, -y);
+						final=max(ufo, cone);
+						return final;
+					}
+				"
+				bboxCenter 0 0 0 
+				bboxSize 2 2 2
+				resolution [100 100 100]
+			}     
+
+			appearance FAppearance {
+				material FMaterial {
+					diffuseColor "r=0; g=1;b=0.5;"
+				}    
+			}
+		}	
+	]
+}
+
+
+
